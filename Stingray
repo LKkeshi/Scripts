@@ -1,0 +1,8 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/sysGhost-aka-BiKode/Scripts2022/main/BigHeadV3_Unpatched", true))()
+
+EXECUTE INF YIELD
+
+game.Players.LocalPlayer.Character.FallDamageScript:Destroy()
+
+PACKAGE
+https://www.youtube.com/watch?v=cUCr4qQ2wt0
