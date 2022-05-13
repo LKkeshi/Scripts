@@ -12,6 +12,7 @@ local autoEquip = false --(VR only setting) If this is true, instead of holding 
 --[[---------KeyBinds---------]]--
 -- VR: Grip Button to equip and unequip the sword
 -- No VR: F to equip and unequip the sword
+-- C to teleport
 --[[--------------------------]]--
 
 
@@ -944,7 +945,47 @@ Script = function()
         for _, Part in pairs(Character:GetDescendants()) do
             if Part:IsA("BasePart") and Part.Name == "Handle" and Part.Parent:IsA("Accessory") then
                 Part.LocalTransparencyModifier = 0
-            elseif Part:IsA("BasePart") and Part.Transparency < 0 xss=removed xss=removed xss=removed xss=removed xss=removed xss=removed xss=removed xss=removed xss=removed xss=removed xss=removed xss=removed xss=removed> 0 then
+            elseif Part:IsA("BasePart") and Part.Transparency < 0.5 and Part.Name ~= "Head" then
+                Part.LocalTransparencyModifier = 0
+            elseif Part:IsA("BasePart") and Part.Name == "Head" then
+                Part.LocalTransparencyModifier = 1
+            end
+            if not Part:IsA("BasePart") and not Part:IsA("AlignPosition") and not Part:IsA("AlignOrientation") then
+                pcall(
+                    function()
+                        Part.Transparency = 1
+                    end
+                )
+                pcall(
+                    function()
+                        Part.Enabled = false
+                    end
+                )
+            end
+        end
+    end
+    local FootUpdateDebounce = tick()
+    local function FloorRay(Part, Distance)
+        local Position = Part.CFrame.p
+        local Target = Position - Vector3.new(0, Distance, 0)
+        local Line = Ray.new(Position, (Target - Position).Unit * Distance)
+        local FloorPart, FloorPosition, FloorNormal =
+            workspace:FindPartOnRayWithIgnoreList(Line, {VirtualRig, VirtualBody, Character})
+        if FloorPart then
+            return FloorPart, FloorPosition, FloorNormal, (FloorPosition - Position).Magnitude
+        else
+            return nil, Target, Vector3.new(), Distance
+        end
+    end
+    local function Flatten(CF)
+        local X, Y, Z = CF.X, CF.Y, CF.Z
+        local LX, LZ = CF.lookVector.X, CF.lookVector.Z
+        return CFrame.new(X, Y, Z) * CFrame.Angles(0, math.atan2(LX, LZ), 0)
+    end
+    local FootTurn = 1
+    local function FootReady(Foot, Target)
+        local MaxDist
+        if Character.Humanoid.MoveDirection.Magnitude > 0 then
             MaxDist = .5
         else
             MaxDist = 1
@@ -1587,7 +1628,7 @@ ChatHUDFunc = function()
         end
         NewGlobal(Message, Sender, Color)
         local Distance = GetPlayerDistance(Sender)
-        if Distance and Distance &lt;= ChatLocalRange then
+        if Distance and Distance <= ChatLocalRange then
             NewLocal(Message, Sender, Color, Distance)
         end
     end
@@ -1725,7 +1766,7 @@ ViewHUDFunc = function()
                         return
                     end
                     if
-                        (Root and (Root.Position - Camera.CFrame.p).Magnitude &lt;= ViewportRange) or Player == Client or
+                        (Root and (Root.Position - Camera.CFrame.p).Magnitude <= ViewportRange) or Player == Client or
                             not Root
                      then
                         for i = 1, #Correspondents do
