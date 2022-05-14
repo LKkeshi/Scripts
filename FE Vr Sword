@@ -12,7 +12,6 @@ local autoEquip = false --(VR only setting) If this is true, instead of holding 
 --[[---------KeyBinds---------]]--
 -- VR: Grip Button to equip and unequip the sword
 -- No VR: F to equip and unequip the sword
--- C to teleport
 --[[--------------------------]]--
 
 
