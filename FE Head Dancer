@@ -1,5 +1,5 @@
 HumanDied = false
-_G.ClickFling=false -- Set this to true if u want.
+_G.ClickFling=true -- Set this to true if u want.
 
 
 plr = game.Players.LocalPlayer
